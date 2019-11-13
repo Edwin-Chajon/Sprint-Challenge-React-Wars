@@ -7,40 +7,31 @@ import {
     CardTitle,
     CardSubtitle
   } from 'reactstrap';
-
-
     const StarChar = () => {
-
-        const [charInfo, setCharInfo] = useState(null);
-
+        const [charInfo, setCharInfo] = useState([]);
         useEffect(() => {
-            axios.get('https://corsanywhere.herokuapp.com/https://lambda-swapi.herokuapp.com/api/people/')
+            axios.get('https://lambda-swapi.herokuapp.com/api/people/')
             .then(response => {
-                console.log(response.data.results)
+                console.log("res", response.data.results);
                 //setCharInfo(response.data.results)
-                const newSet = response.data.results;
-                newSet.forEach(element => {
-                console.log(element)
-                    setCharInfo(element)
-                });
+                setCharInfo(response.data.results);
             })
             .catch(error => {
                 console.log('The data was not returned', error);
               });
         }, []);
-
-        return(
-            <Container>
-                {charInfo && (
-                        <Card>
-                        <CardBody>
-                                <CardTitle>{charInfo.name}</CardTitle>
-                                <CardSubtitle>{` height: ${charInfo.height}`}</CardSubtitle>
-                                <CardSubtitle>{` Birth: ${charInfo.birth_year}`}</CardSubtitle>
-                        </CardBody>
-                        </Card>
-                )}
-            </Container>
-        );
+        return (
+          <Container>
+            {charInfo.map((char, index) => (
+            <Card key = {index}>
+                <CardBody>
+                  <CardTitle>{char.name}</CardTitle>
+                  <CardSubtitle>{` height: ${char.height}`}</CardSubtitle>
+                  <CardSubtitle>{` Birth: ${char.birth_year}`}</CardSubtitle>
+                </CardBody>
+              </Card>
+            ))}    
+          </Container>
+        )
     }
   export default StarChar
